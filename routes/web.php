@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RowController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::redirect('/', 'upload');
+Route::middleware('auth.basic')
+    ->group(function () {
+    Route::get('upload', [UploadController::class, 'create'])->name('upload');
+    Route::post('upload', [UploadController::class, 'store']);
 });
+Route::get('rows', [RowController::class, 'index'])->name('rows');
